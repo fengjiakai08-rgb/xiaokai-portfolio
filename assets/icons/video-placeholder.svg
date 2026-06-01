@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
+  <rect width="640" height="420" fill="#101010"/>
+  <circle cx="320" cy="190" r="54" fill="rgba(201,168,76,.18)" stroke="#c9a84c" stroke-width="3"/>
+  <path d="M304 160l58 30-58 30z" fill="#c9a84c"/>
+  <text x="36" y="360" fill="#eeeae2" font-size="24" font-family="Arial, sans-serif">Video Work</text>
+</svg>
