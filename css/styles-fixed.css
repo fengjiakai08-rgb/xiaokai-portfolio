@@ -517,3 +517,43 @@ body.in-contact .interaction-cockpit{opacity:0!important;pointer-events:none!imp
 #cover .hero-tags,
 #cover .award-lens,
 #cover .cover-actions{opacity:1!important;transform:none!important;animation:none!important;filter:none!important}
+
+
+/* Mobile category rail no-overlap fix. */
+@media(max-width:760px){
+  #portfolioSection[data-view="archive"] #categoryNav{
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:flex-start;
+    gap:.5rem;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:.65rem 0 1rem;
+    margin:0 0 .15rem;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    scroll-snap-type:x proximity;
+  }
+  #portfolioSection[data-view="archive"] #categoryNav::-webkit-scrollbar{display:none}
+  #portfolioSection[data-view="archive"] .cat-filter-btn{
+    flex:0 0 auto;
+    width:auto;
+    min-width:max-content;
+    max-width:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:.35rem;
+    white-space:nowrap;
+    overflow:visible;
+    line-height:1.2;
+    padding:.58rem .82rem;
+    scroll-snap-align:start;
+  }
+  #portfolioSection[data-view="archive"] .cat-filter-btn .cat-count{flex:0 0 auto}
+  #portfolioSection[data-view="archive"] #gallery{padding-bottom:7.5rem}
+}
