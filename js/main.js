@@ -68,6 +68,14 @@ function renderGallery(){
 function projectTools(w){var map={'cat-1':'AIGC / 分镜组织 / 风格筛选','cat-6':'UI 结构 / 信息层级 / 页面节奏','cat-12':'产品概念 / 包装视觉 / 场景展示','cat-16':'版式系统 / 主视觉 / 应用延展','cat-17':'空间氛围 / 材质光影 / 场景叙事','cat-18':'角色设定 / IP 延展 / 姿态表情','cat-19':'场景生成 / 光影控制 / 后期统一','cat-5':'插画构图 / 色彩情绪 / 图形延展'};return map[w.categoryId]||'视觉方案 / 图像执行 / 展示交付'}
 function projectFlowSteps(w){if(w.categoryId==='cat-1'||w.categoryId==='cat-19')return['概念方向','提示生成','筛选统一','视觉交付'];if(w.categoryId==='cat-6')return['信息架构','界面层级','交互路径','页面交付'];if(w.categoryId==='cat-12')return['文化提炼','产品转译','包装展示','场景落地'];return['主题判断','视觉执行','细节统一','展示交付']}
 function promptTokens(w){var map={'cat-1':['角色情绪','镜头节奏','毛发质感','奇幻氛围','分镜连贯'],'cat-6':['信息层级','暗色界面','筛选路径','组件节奏','可读性'],'cat-12':['文化转译','包装材质','产品场景','收藏属性','商业展示'],'cat-16':['版式秩序','主视觉','传播延展','字形对比','品牌语气'],'cat-17':['空间动线','材质光影','场景氛围','尺度关系','室内叙事'],'cat-18':['IP 设定','表情姿态','角色比例','道具细节','三视图'],'cat-19':['自然光影','色彩层次','空间纵深','镜头构图','环境叙事'],'cat-5':['手绘质感','色彩情绪','图形延展','构图重心','插画应用']};return map[w.categoryId]||['概念关键词','视觉风格','细节控制','展示场景','交付表达']}
+function projectStoryboard(w,story,brief){var cat=catById(w.categoryId),catName=cat?cat.name:'综合设计',flow=projectFlowSteps(w),tokens=promptTokens(w),desc=workDesc(w);return[
+  {key:'brief',label:'Brief',title:'项目目标',body:story.target,points:['项目类型：'+catName,'切入角度：'+brief[0],'最终产出：'+story.result]},
+  {key:'process',label:'Process',title:'设计过程',body:story.method,points:flow.map(function(s,i){return String(i+1).padStart(2,'0')+' · '+s})},
+  {key:'detail',label:'Detail',title:'细节判断',body:story.focus,points:tokens.slice(0,4).map(function(t){return '控制点：'+t})},
+  {key:'final',label:'Final',title:'最终交付',body:desc,points:[brief[2],'能力证明：'+projectTools(w),'面试讲述：目标、过程、结果三段式展开']}
+]}
+function renderStoryPanel(steps,active){var panel=document.getElementById('lbStoryPanel');if(!panel||!steps||!steps.length)return;var s=steps[active]||steps[0];panel.innerHTML='<div class="story-panel-head"><span>'+esc(s.label)+'</span><b>'+esc(s.title)+'</b></div><p>'+esc(s.body)+'</p><ul>'+s.points.map(function(p){return'<li>'+esc(p)+'</li>'}).join('')+'</ul>'}
+function bindStoryTabs(steps){var tabs=document.getElementById('lbStoryTabs');if(!tabs)return;tabs.innerHTML=steps.map(function(s,i){return'<button type="button" class="'+(i===0?'active':'')+'" data-story-step="'+i+'" style="--tab:'+i+'">'+esc(s.label)+'</button>'}).join('');renderStoryPanel(steps,0);tabs.querySelectorAll('[data-story-step]').forEach(function(btn){btn.addEventListener('click',function(){var n=+btn.getAttribute('data-story-step');tabs.querySelectorAll('[data-story-step]').forEach(function(b){b.classList.toggle('active',b===btn)});renderStoryPanel(steps,n)})})}
 
 // ★ 核心修改：视频使用 mediaBase64 创建 <video> 标签播放 ★
 function openLB(idx){
@@ -93,7 +101,7 @@ function openLB(idx){
     ['工具与能力',projectTools(w)]
   ].map(function(p){return'<div class="project-proof"><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></div>'}).join('');
   var prompt=document.getElementById('lbPrompt');if(prompt)prompt.innerHTML=promptTokens(w).map(function(t,i){return'<i style="--chip:'+i+'">'+esc(t)+'</i>'}).join('');
-  var tabs=document.getElementById('lbStoryTabs');if(tabs)tabs.innerHTML=['Brief','Process','Detail','Final'].map(function(t,i){return'<i class="'+(i===0?'active':'')+'" style="--tab:'+i+'">'+t+'</i>'}).join('');
+  bindStoryTabs(projectStoryboard(w,story,brief));
   var flow=document.getElementById('lbFlow');if(flow)flow.innerHTML=projectFlowSteps(w).map(function(s,i){return'<i style="--step:'+i+'">'+esc(s)+'</i>'}).join('');
   var cat=catById(w.categoryId),ce=document.getElementById('lbCat');
   if(cat){ce.textContent=cat.icon+' '+cat.name;ce.style.display='inline-block'}else{ce.style.display='none'}
