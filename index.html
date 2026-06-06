@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300&amp;family=Noto+Serif+SC:wght@400;600;700&amp;family=DM+Mono:wght@300;400;500&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles-fixed.css?v=17e7265">
+<link rel="stylesheet" href="css/styles-fixed.css?v=ux-20260606">
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 </head>
 <body style="">
@@ -32,7 +32,7 @@
 </div>
 <div class="cover-actions">
 <button class="btn btn-primary btn-lg" onclick="document.getElementById('caseSection').scrollIntoView({behavior:'smooth'})">查看精选案例</button>
-<button class="btn btn-outline btn-lg" onclick="document.getElementById('portfolioSection').scrollIntoView({behavior:'smooth'})">浏览作品库</button>
+<button class="btn btn-outline btn-lg" onclick="setPortfolioView('archive');document.getElementById('portfolioSection').scrollIntoView({behavior:'smooth'})">浏览作品库</button>
 <button class="btn btn-outline btn-lg" onclick="document.getElementById('contactSection').scrollIntoView({behavior:'smooth'})">联系我</button>
 </div></div>
 <aside class="hero-dashboard" aria-label="作品集概览" data-tilt-ready="1" style="--mx: 4px; --my: 19.34375px;">
@@ -87,8 +87,12 @@
 <div id="caseRail" class="case-rail"></div>
 <div id="caseStudyGrid" class="case-study-grid"></div>
 </section>
-<section id="portfolioSection" class="section">
+<section id="portfolioSection" class="section" data-view="curation">
 <div class="section-header work-header"><div><p class="section-kicker">Curated Work Map</p><h2>分类<em>策展地图</em></h2></div><p class="section-note">先让每个类别承担一个明确能力判断：代表作负责第一印象，补充图负责证明广度，完整作品库放在下方作为检索。</p></div>
+<div class="portfolio-switch" role="tablist" aria-label="作品库浏览方式">
+<button class="portfolio-switch-btn active" type="button" data-portfolio-view="curation">分类策展</button>
+<button class="portfolio-switch-btn" type="button" data-portfolio-view="archive">全部作品</button>
+</div>
 <div id="categoryStories" class="category-stories"></div>
 <div class="archive-advice"><b>Archive Filter</b><p>上方先按类别理解你的能力结构；需要看更多细节时，再用下方筛选、搜索和灯箱进入完整作品库。</p><span>这样页面会从“照片堆积”变成“策展入口 + 证据库”：每类先讲为什么值得看，再展示做了多少。</span></div>
 <div class="gallery-tools"><input type="text" id="searchInput" placeholder="搜索作品..."></div>
@@ -98,7 +102,7 @@
 <section id="contactSection" class="section">
 <div class="contact-wrap">
 <div class="contact-left"><h3>Let's <em>Connect</em></h3><p>如果你正在寻找能够兼顾视觉执行、AI 生成和项目表达的设计实习生，可以直接通过邮箱联系我。</p>
-<a class="contact-email" href="mailto:3237205525@qq.com"><div class="email-icon">✉</div><div class="email-info"><div class="email-label">电子邮件</div><div class="email-addr">3237205525@qq.com</div></div></a></div>
+<a class="contact-email" href="mailto:3237205525@qq.com"><div class="email-icon">✉</div><div class="email-info"><div class="email-label">电子邮件</div><div class="email-addr">3237205525@qq.com</div></div></a><div class="contact-actions"><a class="contact-action" href="mailto:3237205525@qq.com">发邮件</a><button id="copyEmail" class="contact-action" type="button">复制邮箱</button></div></div>
 <div class="contact-right">
 <div class="contact-card"><div class="cc-icon">◎</div><div class="cc-text"><h4>面试讲述顺序</h4><p>先讲 4 个主案例，再按岗位筛选展示相关作品。</p></div></div>
 <div class="contact-card"><div class="cc-icon">CV</div><div class="cc-text"><h4>可补充材料</h4><p>简历 PDF、项目过程页、AIGC 生成记录与工具说明。</p></div></div>
@@ -166,15 +170,24 @@
 <div class="editor-list" id="editorList"></div>
 </div>
 </aside>
-<div id="lightbox" class="lightbox-overlay" style="display:none">
-<button class="lb-btn lightbox-close" onclick="closeLB()">×</button>
-<button class="lb-btn lightbox-prev" onclick="navLB(-1)">‹</button>
-<button class="lb-btn lightbox-next" onclick="navLB(1)">›</button>
-<div class="lightbox-content"><div id="lbMedia"></div><div class="lightbox-info"><h3 id="lbTitle">小茄人-礼帽</h3><p id="lbDesc"></p><span id="lbCat" class="badge" style="display: inline-block;">🧝 角色设计</span></div></div></div>
+<div id="lightbox" class="lightbox-overlay" style="display:none" aria-hidden="true">
+<button class="lb-btn lightbox-close" onclick="closeLB()" aria-label="关闭作品详情">×</button>
+<button class="lb-btn lightbox-prev" onclick="navLB(-1)" aria-label="上一件作品">‹</button>
+<button class="lb-btn lightbox-next" onclick="navLB(1)" aria-label="下一件作品">›</button>
+<div class="lightbox-content project-viewer">
+<div class="project-media-stage"><div id="lbMedia"></div></div>
+<aside class="lightbox-info project-panel">
+<div class="project-meta-row"><span id="lbStep" class="project-step">01 / 01</span><span id="lbCat" class="badge" style="display:inline-block">作品分类</span></div>
+<h3 id="lbTitle">作品标题</h3>
+<p id="lbDesc"></p>
+<div id="lbProof" class="project-proof-grid"></div>
+<div class="project-process"><span>过程线索</span><div id="lbFlow" class="project-flow"></div></div>
+</aside>
+</div></div>
 <script id="portfolioEmbeddedWorks" type="application/json"></script>
 <script src="data/embedded-works.js"></script>
 <script src="data/portfolio-data.js"></script>
-<script src="js/main.js?v=17e7265"></script>
+<script src="js/main.js?v=ux-20260606"></script>
 
 
 </body></html>
