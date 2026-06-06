@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300&amp;family=Noto+Serif+SC:wght@400;600;700&amp;family=DM+Mono:wght@300;400;500&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles-fixed.css?v=ux-20260607-catnav">
+<link rel="stylesheet" href="css/styles-fixed.css?v=ux-20260607-creative">
 <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 </head>
 <body style="">
@@ -14,6 +14,17 @@
 <canvas id="coverCanvas" width="300" height="150"></canvas>
 <div id="coverBackdrop" class="cover-backdrop"></div>
 <div class="cover-gradient"></div>
+<div class="hero-visual-lab" aria-hidden="true">
+<div class="lab-grid"></div>
+<div class="lab-scan"></div>
+<div class="lab-orbit lab-orbit-a"><i></i><i></i><i></i></div>
+<div class="lab-orbit lab-orbit-b"><i></i><i></i><i></i></div>
+<div class="lab-signal-card"><span>VISUAL SYSTEM</span><b>AIGC × DESIGN</b><em></em></div>
+<span class="lab-key lab-key-1">PROMPT</span>
+<span class="lab-key lab-key-2">MATERIAL</span>
+<span class="lab-key lab-key-3">CULTURE</span>
+<span class="lab-key lab-key-4">INTERFACE</span>
+</div>
 <div class="scene-bar"><span class="scene-bar-label">场景</span>
 <div class="scene-dot active" data-scene="default"></div><div class="scene-dot" data-scene="neon"></div><div class="scene-dot" data-scene="ocean"></div><div class="scene-dot" data-scene="forest"></div><div class="scene-dot" data-scene="sunset"></div><div class="scene-dot" data-scene="sakura"></div><div class="scene-dot" data-scene="arctic"></div></div>
 <div class="cover-content">
@@ -181,13 +192,15 @@
 <h3 id="lbTitle">作品标题</h3>
 <p id="lbDesc"></p>
 <div id="lbProof" class="project-proof-grid"></div>
+<div class="prompt-map"><span>AIGC 拆解</span><div id="lbPrompt" class="prompt-chips"></div></div>
+<div class="project-story-tabs" id="lbStoryTabs"></div>
 <div class="project-process"><span>过程线索</span><div id="lbFlow" class="project-flow"></div></div>
 </aside>
 </div></div>
 <script id="portfolioEmbeddedWorks" type="application/json"></script>
 <script src="data/embedded-works.js"></script>
 <script src="data/portfolio-data.js"></script>
-<script src="js/main.js?v=ux-20260607"></script>
+<script src="js/main.js?v=ux-20260607-creative"></script>
 
 
 </body></html>
