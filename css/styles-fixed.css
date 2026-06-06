@@ -506,3 +506,14 @@ body.in-contact .interaction-cockpit{opacity:0!important;pointer-events:none!imp
   #contactSection{padding-left:1.2rem;padding-right:1.2rem}
   #contactSection .contact-left.motion-reveal{opacity:1;transform:none;filter:none}
 }
+
+
+/* Hero core copy is visible before enhancement motion. */
+#cover .cover-eyebrow,
+#cover .cover-divider,
+#cover .cover-name,
+#cover .cover-title,
+#cover .cover-sub,
+#cover .hero-tags,
+#cover .award-lens,
+#cover .cover-actions{opacity:1!important;transform:none!important;animation:none!important;filter:none!important}
